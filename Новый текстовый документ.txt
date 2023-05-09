@@ -1,0 +1,33 @@
+class MovieSelector {
+    private readonly _movies: Movie[] = [
+{tltle: "Fight Club", year: 1999, genre: ['drama', 'criminal', 'thriller'], rating: 8.7}, 
+{tltle: "Pulp Fiction", year: 1994, genre: ['drama', 'criminal'], rating: 8.6}, 
+{tltle: "The Shawshank Redemption", year: 1994, genre: ['drama'], rating: 9.1}, 
+{tltle: "The Mask", year: 1999, genre: ['fantasy', 'criminal', 'comedy'], rating: 8.7}, 
+{tltle: "Knockin' on Heaven's Door", year: 1997, genre: ['drama', 'criminal', 'comedy'], rating: 8.6}, 
+    ];
+
+    consrtuctor() {
+        of(this._movies)
+        .pipe(
+            filter((movies: Movie[]) => movies.length >= 4),
+            map((movies: Movie[]) => this._sortMovies(movies).slice(0, 4)),
+            map((movies: Movie[]) => this._getDrama(movies)),
+            map((movies: Movie[]) => this._getShort(movies)),
+            map((movies: Movie[]) => movies.length > 0 ? `${movies[0].title} is my choice` : "Nothing found"),
+            tap(console.log),
+        );
+    }
+
+    private _sortMovies(movies: Movie[]): Movie[] {
+        return movies.sort((a: Movie, b: Movie) => b.rating === a.rating ? b.year - a.year : b.rating - a.rating);
+    }
+
+    private _getDrama(movies: Movie[]): Movie[] {
+        return movies.filter((movie: Movie) => movie.genre.includes("drama"));
+    }
+
+    private _getShort(movies: Movie[]): Movie[] {
+        return movies.filter((movie: Movie) => movie.title.split("").length < 3);
+    }
+}
