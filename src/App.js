@@ -3,12 +3,12 @@ import { Board } from './Board';
 import { useState } from 'react';
 
 export default function Game() {
-	// по умолчанию игрок = true
-	const [xIsNext, setXIsNext] = useState(true);
 	// массив, внутри коорого массив из 9 null
 	const [history, setHistory] = useState([Array(9).fill(null)]);
 	// какой шаг пользователь просматривает в данный момент
 	const [currentMove, setCurrentMove] = useState(0);
+
+	const xIsNext = currentMove % 2 === 0;
 	// текущий ход - последний массив из history
 	const currentSquares = history[currentMove];
 
@@ -17,13 +17,10 @@ export default function Game() {
 		const nextHistory = [...history.slice(0, currentMove + 1), nextSquares]
 		setHistory(nextHistory);
 		setCurrentMove(nextHistory.length - 1)
-		setXIsNext(!xIsNext);
 	}
 
 	function jumpTo(nextMove) {
 		setCurrentMove(nextMove);
-		// установить значение true, если число, на которое меняется currentMove, четное
-		setXIsNext(nextMove % 2 === 0)
 	}
 
 	const moves = history.map((squares, move) => {
